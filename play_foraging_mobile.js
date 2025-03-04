@@ -229,7 +229,7 @@ async function experimentInit() {
     text: '',
     font: 'Arial',
     units: undefined, 
-    pos: [0.4, 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
+    pos: [0.3, 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
     languageStyle: 'LTR',
     color: new util.Color('white'),  opacity: undefined,
     depth: -4.0 
@@ -241,7 +241,7 @@ async function experimentInit() {
     text: '',
     font: 'Arial',
     units: undefined, 
-    pos: [(- 0.4), 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
+    pos: [(- 0.3), 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
     languageStyle: 'LTR',
     color: new util.Color('white'),  opacity: undefined,
     depth: -5.0 
