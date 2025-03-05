@@ -1145,11 +1145,9 @@ function choiceRoutineEnd(snapshot) {
             }
         }
     }
-    console.log(mouse.x, mouse.y)
     console.log(message, time_left);
     reaction_time = (decision_start_time - task_timer.getTime());
     console.log("Reaction time:", reaction_time);
-
         // store data for psychoJS.experiment (ExperimentHandler)
         psychoJS.experiment.addData('mouse.x', mouse.x);
         psychoJS.experiment.addData('mouse.y', mouse.y);
@@ -1185,8 +1183,8 @@ function harvestRoutineBegin(snapshot) {
     t = 0;
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
-    harvestClock.reset(routineTimer.getTime());
-    routineTimer.add(harvest_time);
+    harvestClock.reset();
+    routineTimer.reset();
     harvestMaxDurationReached = false;
     // update component parameters for each repeat
     text.setText(message);
@@ -1272,9 +1270,8 @@ function harvestRoutineEachFrame() {
         continueRoutine = true;
         break;
       }
-    
     // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
+    if (continueRoutine) {
       return Scheduler.Event.FLIP_REPEAT;
     } else {
       return Scheduler.Event.NEXT;
@@ -1865,7 +1862,7 @@ function totalRoutineBegin(snapshot) {
     routineTimer.reset();
     totalMaxDurationReached = false;
     // update component parameters for each repeat
-    text_4.setText(((("Your score: " + Number.parseInt(util.round(total_apples)).toString()) + "\n") + "Best score: 234"));
+    text_4.setText(((("Your score: " + Number.parseInt(util.round(total_apples)).toString()) + "\n") + "Best score: 186"));
     psychoJS.experiment.addData('total.started', globalClock.getTime());
     totalMaxDuration = null
     // keep track of which components have finished
