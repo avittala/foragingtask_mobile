@@ -142,7 +142,6 @@ var experiment_settingsClock;
 var block_settingsClock;
 var choiceClock;
 var image;
-var polygon;
 var text_5;
 var text_6;
 var mouse;
@@ -206,21 +205,6 @@ async function experimentInit() {
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : 0.0 
   });
-  polygon = new visual.ShapeStim ({
-    win: psychoJS.window, name: 'polygon', 
-    vertices: 'cross', size:[0.1, 0.1],
-    ori: 0.0, 
-    pos: [0, (- 0.3)], 
-    draggable: false, 
-    anchor: 'center', 
-    lineWidth: 1.0, 
-    lineColor: new util.Color('white'), 
-    fillColor: new util.Color('white'), 
-    colorSpace: 'rgb', 
-    opacity: undefined, 
-    depth: -1, 
-    interpolate: true, 
-  });
   
   
   text_5 = new visual.TextStim({
@@ -229,7 +213,7 @@ async function experimentInit() {
     text: '',
     font: 'Arial',
     units: undefined, 
-    pos: [0.3, 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
+    pos: [0.5, 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
     languageStyle: 'LTR',
     color: new util.Color('white'),  opacity: undefined,
     depth: -4.0 
@@ -241,7 +225,7 @@ async function experimentInit() {
     text: '',
     font: 'Arial',
     units: undefined, 
-    pos: [(- 0.3), 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
+    pos: [(- 0.5), 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
     languageStyle: 'LTR',
     color: new util.Color('white'),  opacity: undefined,
     depth: -5.0 
@@ -640,8 +624,8 @@ function experiment_settingsRoutineEnd(snapshot) {
     }
     psychoJS.experiment.addData('experiment_settings.stopped', globalClock.getTime());
     // Run 'End Routine' code from code_2
-    time_per_block = 60;
-    block_travel_times = [1.5, 8.0];
+    time_per_block = 30;
+    block_travel_times = [2, 10];
     num_blocks = block_travel_times.length;
     mu_apples = 10;
     mu_k = 0.7;
@@ -874,6 +858,8 @@ var block_rps;
 var task_timer;
 var travel_time;
 var apple_time;
+var response_time;
+var harvest_time;
 function block_settingsRoutineEnd(snapshot) {
   return async function () {
     //--- Ending Routine 'block_settings' ---
@@ -889,7 +875,9 @@ function block_settingsRoutineEnd(snapshot) {
     block_rps = [];
     task_timer = new util.CountdownTimer(time_per_block);
     travel_time = block_travel_times[blocks.thisN];
-    apple_time = 1.0;
+    apple_time = 1.0; // apple display time
+    response_time = 1.5; // time to respond
+    harvest_time = 0.5; // time to show shaking harvest
     
     // the Routine "block_settings" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
@@ -920,7 +908,7 @@ function choiceRoutineBegin(snapshot) {
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
     choiceClock.reset(routineTimer.getTime());
-    routineTimer.add(1.000000);
+    routineTimer.add(response_time);
     choiceMaxDurationReached = false;
     // Run 'Begin Routine' code from code
     leave_flag = 0;
@@ -944,7 +932,6 @@ function choiceRoutineBegin(snapshot) {
     // keep track of which components have finished
     choiceComponents = [];
     choiceComponents.push(image);
-    choiceComponents.push(polygon);
     choiceComponents.push(text_5);
     choiceComponents.push(text_6);
     choiceComponents.push(mouse);
@@ -978,25 +965,11 @@ function choiceRoutineEachFrame() {
       image.setAutoDraw(true);
     }
     
-    frameRemains = 0.0 + 1.0 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    frameRemains = 0.0 + response_time - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
     if (image.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       image.setAutoDraw(false);
     }
     
-    
-    // *polygon* updates
-    if (t >= 0.25 && polygon.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      polygon.tStart = t;  // (not accounting for frame time here)
-      polygon.frameNStart = frameN;  // exact frame index
-      
-      polygon.setAutoDraw(true);
-    }
-    
-    frameRemains = 0.25 + 0.75 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (polygon.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      polygon.setAutoDraw(false);
-    }
     
     // Run 'Each Frame' code from code
     time_left = task_timer.getTime();
@@ -1021,7 +994,7 @@ function choiceRoutineEachFrame() {
       text_5.setAutoDraw(true);
     }
     
-    frameRemains = 0.0 + 1.0 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    frameRemains = 0.0 + response_time - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
     if (text_5.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       text_5.setAutoDraw(false);
     }
@@ -1036,13 +1009,13 @@ function choiceRoutineEachFrame() {
       text_6.setAutoDraw(true);
     }
     
-    frameRemains = 0.0 + 1.0 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    frameRemains = 0.0 + response_time - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
     if (text_6.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       text_6.setAutoDraw(false);
     }
     
     // *mouse* updates
-    if (t >= 0.25 && mouse.status === PsychoJS.Status.NOT_STARTED) {
+    if (t >= 0.0 && mouse.status === PsychoJS.Status.NOT_STARTED) {
       // keep track of start time/frame for later
       mouse.tStart = t;  // (not accounting for frame time here)
       mouse.frameNStart = frameN;  // exact frame index
@@ -1051,7 +1024,7 @@ function choiceRoutineEachFrame() {
       mouse.mouseClock.reset();
       prevButtonState = mouse.getPressed();  // if button is down already this ISN'T a new click
       }
-    frameRemains = 0.25 + 0.75 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    frameRemains = 0.0 + response_time - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
     if (mouse.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       mouse.status = PsychoJS.Status.FINISHED;
         }
@@ -1138,7 +1111,7 @@ function choiceRoutineEnd(snapshot) {
     console.log(mouse.x, mouse.y)
     console.log(message, time_left);
     reaction_time = (decision_start_time - task_timer.getTime());
-    wait_time = (1.0 - reaction_time);
+    wait_time = (response_time - reaction_time);
     console.log("Reaction time:", reaction_time, "waiting", wait_time);
 
         // store data for psychoJS.experiment (ExperimentHandler)
@@ -1152,7 +1125,7 @@ function choiceRoutineEnd(snapshot) {
     if (choiceMaxDurationReached) {
         choiceClock.add(choiceMaxDuration);
     } else {
-        choiceClock.add(1.000000);
+        choiceClock.add(response_time);
     }
     // Routines running outside a loop should always advance the datafile row
     if (currentLoop === psychoJS.experiment) {
@@ -1275,7 +1248,7 @@ function harvestRoutineBegin(snapshot) {
     frameN = -1;
     continueRoutine = true; // until we're told otherwise
     harvestClock.reset(routineTimer.getTime());
-    routineTimer.add(1.000000);
+    routineTimer.add(harvest_time);
     harvestMaxDurationReached = false;
     // update component parameters for each repeat
     text.setText(message);
@@ -1314,7 +1287,7 @@ function harvestRoutineEachFrame() {
       text.setAutoDraw(true);
     }
     
-    frameRemains = 0.0 + 1 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    frameRemains = 0.0 + harvest_time - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
     if (text.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       text.setAutoDraw(false);
     }
@@ -1333,7 +1306,7 @@ function harvestRoutineEachFrame() {
       image_2.setAutoDraw(true);
     }
     
-    frameRemains = 0.0 + 1 - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    frameRemains = 0.0 + harvest_time - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
     if (image_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       image_2.setAutoDraw(false);
     }
@@ -1384,7 +1357,7 @@ function harvestRoutineEnd(snapshot) {
     if (harvestMaxDurationReached) {
         harvestClock.add(harvestMaxDuration);
     } else {
-        harvestClock.add(1.000000);
+        harvestClock.add(harvest_time);
     }
     // Routines running outside a loop should always advance the datafile row
     if (currentLoop === psychoJS.experiment) {
@@ -1579,7 +1552,7 @@ function too_slowRoutineEachFrame() {
       text_3.setAutoDraw(true);
     }
     
-    frameRemains = 0.0 + (apple_time + 1) - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    frameRemains = 0.0 + (apple_time + harvest_time) - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
     if (text_3.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       text_3.setAutoDraw(false);
     }
@@ -1594,7 +1567,7 @@ function too_slowRoutineEachFrame() {
       image_3.setAutoDraw(true);
     }
     
-    frameRemains = 0.0 + (apple_time + 1) - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    frameRemains = 0.0 + (apple_time + harvest_time) - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
     if (image_3.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       image_3.setAutoDraw(false);
     }
