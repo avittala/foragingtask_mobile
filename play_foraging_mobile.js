@@ -213,7 +213,7 @@ async function experimentInit() {
     text: '',
     font: 'Arial',
     units: undefined, 
-    pos: [0.5, 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
+    pos: [0.3, 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
     languageStyle: 'LTR',
     color: new util.Color('white'),  opacity: undefined,
     depth: -4.0 
@@ -225,7 +225,7 @@ async function experimentInit() {
     text: '',
     font: 'Arial',
     units: undefined, 
-    pos: [(- 0.5), 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
+    pos: [(- 0.3), 0.4], draggable: false, height: 0.05,  wrapWidth: undefined, ori: 0.0,
     languageStyle: 'LTR',
     color: new util.Color('white'),  opacity: undefined,
     depth: -5.0 
@@ -624,8 +624,8 @@ function experiment_settingsRoutineEnd(snapshot) {
     }
     psychoJS.experiment.addData('experiment_settings.stopped', globalClock.getTime());
     // Run 'End Routine' code from code_2
-    time_per_block = 30;
-    block_travel_times = [2, 10];
+    time_per_block = 60;
+    block_travel_times = [1.5, 8.0];
     num_blocks = block_travel_times.length;
     mu_apples = 10;
     mu_k = 0.7;
