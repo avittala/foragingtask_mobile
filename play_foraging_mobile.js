@@ -1862,7 +1862,7 @@ function totalRoutineBegin(snapshot) {
     routineTimer.reset();
     totalMaxDurationReached = false;
     // update component parameters for each repeat
-    text_4.setText(((("Your score: " + Number.parseInt(util.round(total_apples)).toString()) + "\n") + "Best score: 186"));
+    text_4.setText(((("Your score: " + Number.parseInt(util.round(total_apples)).toString()) + "\n") + "Best score: 184"));
     psychoJS.experiment.addData('total.started', globalClock.getTime());
     totalMaxDuration = null
     // keep track of which components have finished
