@@ -164,6 +164,10 @@ var text_9;
 var mouse_3;
 var totalClock;
 var text_4;
+var lt_choice_rect;
+var rt_choice_rect;
+var lt_choice_text;
+var rt_choice_text;
 var globalClock;
 var routineTimer;
 async function experimentInit() {
@@ -231,6 +235,32 @@ async function experimentInit() {
     depth: -5.0 
   });
 
+  lt_choice_text = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'lt_choice_text',
+    text: 'Harvest',
+    font: 'Arial',
+    units: undefined,
+    pos: [-0.3, -0.3], draggable: false, height: 0.1, wrapWidth: undefined, ori: 0.0,
+    languageStyle: 'LTR',
+    color: new util.Color('white'), opacity: undefined,
+    depth: -5.0
+
+  });
+
+  rt_choice_text = new visual.TextStim({
+    win: psychoJS.window,
+    name: 'rt_choice_text',
+    text: 'Travel',
+    font: 'Arial',
+    units: undefined,
+    pos: [0.3, -0.3], draggable: false, height: 0.1, wrapWidth: undefined, ori: 0.0,
+    languageStyle: 'LTR',
+    color: new util.Color('white'), opacity: undefined,
+    depth: -5.0
+
+  });
+
   mouse = new core.Mouse({
     win: psychoJS.window,
   });
@@ -249,33 +279,6 @@ async function experimentInit() {
     color : new util.Color([1,1,1]), opacity : undefined,
     flipHoriz : false, flipVert : false,
     texRes : 128.0, interpolate : true, depth : 0.0 
-  });
-  // Initialize components for Routine "harvest"
-  harvestClock = new util.Clock();
-  text = new visual.TextStim({
-    win: psychoJS.window,
-    name: 'text',
-    text: '',
-    font: 'Arial',
-    units: undefined, 
-    pos: [0, 0.3], draggable: false, height: 0.1,  wrapWidth: undefined, ori: 0.0,
-    languageStyle: 'LTR',
-    color: new util.Color('white'),  opacity: undefined,
-    depth: 0.0 
-  });
-  
-  image_2 = new visual.ImageStim({
-    win : psychoJS.window,
-    name : 'image_2', units : undefined, 
-    image : 'tree.png', mask : undefined,
-    anchor : 'center',
-    ori : 0.0, 
-    pos : [0, 0], 
-    draggable: false,
-    size : [0.5, 0.5],
-    color : new util.Color([1,1,1]), opacity : undefined,
-    flipHoriz : false, flipVert : false,
-    texRes : 128.0, interpolate : true, depth : -1.0 
   });
   // Initialize components for Routine "show_apples"
   show_applesClock = new util.Clock();
@@ -624,7 +627,7 @@ function experiment_settingsRoutineEnd(snapshot) {
     }
     psychoJS.experiment.addData('experiment_settings.stopped', globalClock.getTime());
     // Run 'End Routine' code from code_2
-    time_per_block = 60;
+    time_per_block = 45;
     block_travel_times = [1.5, 8.0];
     num_blocks = block_travel_times.length;
     mu_apples = 10;
@@ -708,9 +711,6 @@ function trialsLoopBegin(trialsLoopScheduler, snapshot) {
       trialsLoopScheduler.add(wait_rtRoutineBegin(snapshot));
       trialsLoopScheduler.add(wait_rtRoutineEachFrame());
       trialsLoopScheduler.add(wait_rtRoutineEnd(snapshot));
-      trialsLoopScheduler.add(harvestRoutineBegin(snapshot));
-      trialsLoopScheduler.add(harvestRoutineEachFrame());
-      trialsLoopScheduler.add(harvestRoutineEnd(snapshot));
       trialsLoopScheduler.add(show_applesRoutineBegin(snapshot));
       trialsLoopScheduler.add(show_applesRoutineEachFrame());
       trialsLoopScheduler.add(show_applesRoutineEnd(snapshot));
@@ -859,7 +859,6 @@ var task_timer;
 var travel_time;
 var apple_time;
 var response_time;
-var harvest_time;
 function block_settingsRoutineEnd(snapshot) {
   return async function () {
     //--- Ending Routine 'block_settings' ---
@@ -876,8 +875,7 @@ function block_settingsRoutineEnd(snapshot) {
     task_timer = new util.CountdownTimer(time_per_block);
     travel_time = block_travel_times[blocks.thisN];
     apple_time = 1.0; // apple display time
-    response_time = 1.5; // time to respond
-    harvest_time = 0.5; // time to show shaking harvest
+    response_time = 2.0; // time to respond
     
     // the Routine "block_settings" was not non-slip safe, so reset the non-slip timer
     routineTimer.reset();
@@ -934,6 +932,8 @@ function choiceRoutineBegin(snapshot) {
     choiceComponents.push(image);
     choiceComponents.push(text_5);
     choiceComponents.push(text_6);
+    choiceComponents.push(lt_choice_text);
+    choiceComponents.push(rt_choice_text);
     choiceComponents.push(mouse);
     
     for (const thisComponent of choiceComponents)
@@ -1012,6 +1012,34 @@ function choiceRoutineEachFrame() {
     frameRemains = 0.0 + response_time - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
     if (text_6.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       text_6.setAutoDraw(false);
+    }
+
+    // *lt_choice_text* updates
+    if (t >= 0.0 && lt_choice_text.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      lt_choice_text.tStart = t;  // (not accounting for frame time here)
+      lt_choice_text.frameNStart = frameN;  // exact frame index
+      
+      lt_choice_text.setAutoDraw(true);
+    }
+    
+    frameRemains = 0.0 + response_time - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    if (lt_choice_text.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      lt_choice_text.setAutoDraw(false);
+    }
+
+    // *rt_choice_text* updates
+    if (t >= 0.0 && rt_choice_text.status === PsychoJS.Status.NOT_STARTED) {
+      // keep track of start time/frame for later
+      rt_choice_text.tStart = t;  // (not accounting for frame time here)
+      rt_choice_text.frameNStart = frameN;  // exact frame index
+      
+      rt_choice_text.setAutoDraw(true);
+    }
+    
+    frameRemains = 0.0 + response_time - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    if (rt_choice_text.status === PsychoJS.Status.STARTED && t >= frameRemains) {
+      rt_choice_text.setAutoDraw(false);
     }
     
     // *mouse* updates
@@ -1235,139 +1263,6 @@ function wait_rtRoutineEnd(snapshot) {
 }
 
 
-var harvestMaxDurationReached;
-var maxDurationReached;
-var harvestMaxDuration;
-var harvestComponents;
-function harvestRoutineBegin(snapshot) {
-  return async function () {
-    TrialHandler.fromSnapshot(snapshot); // ensure that .thisN vals are up to date
-    
-    //--- Prepare to start Routine 'harvest' ---
-    t = 0;
-    frameN = -1;
-    continueRoutine = true; // until we're told otherwise
-    harvestClock.reset(routineTimer.getTime());
-    routineTimer.add(harvest_time);
-    harvestMaxDurationReached = false;
-    // update component parameters for each repeat
-    text.setText(message);
-    psychoJS.experiment.addData('harvest.started', globalClock.getTime());
-    // skip this Routine if its 'Skip if' condition is True
-    continueRoutine = continueRoutine && !((harvest_flag == 0));
-    maxDurationReached = false
-    harvestMaxDuration = null
-    // keep track of which components have finished
-    harvestComponents = [];
-    harvestComponents.push(text);
-    harvestComponents.push(image_2);
-    
-    for (const thisComponent of harvestComponents)
-      if ('status' in thisComponent)
-        thisComponent.status = PsychoJS.Status.NOT_STARTED;
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
-function harvestRoutineEachFrame() {
-  return async function () {
-    //--- Loop for each frame of Routine 'harvest' ---
-    // get current time
-    t = harvestClock.getTime();
-    frameN = frameN + 1;// number of completed frames (so 0 is the first frame)
-    // update/draw components on each frame
-    
-    // *text* updates
-    if (t >= 0.0 && text.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      text.tStart = t;  // (not accounting for frame time here)
-      text.frameNStart = frameN;  // exact frame index
-      
-      text.setAutoDraw(true);
-    }
-    
-    frameRemains = 0.0 + harvest_time - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (text.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      text.setAutoDraw(false);
-    }
-    
-    
-    if (image_2.status === PsychoJS.Status.STARTED){ // only update if being drawn
-      image_2.setPos([(0.01 * (Math.random() - 0.5)), (0.01 * (Math.random() - 0.5))], false);
-    }
-    
-    // *image_2* updates
-    if (t >= 0.0 && image_2.status === PsychoJS.Status.NOT_STARTED) {
-      // keep track of start time/frame for later
-      image_2.tStart = t;  // (not accounting for frame time here)
-      image_2.frameNStart = frameN;  // exact frame index
-      
-      image_2.setAutoDraw(true);
-    }
-    
-    frameRemains = 0.0 + harvest_time - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
-    if (image_2.status === PsychoJS.Status.STARTED && t >= frameRemains) {
-      image_2.setAutoDraw(false);
-    }
-    
-    // Run 'Each Frame' code from code_6
-    time_left = task_timer.getTime();
-    if ((time_left <= 0.0)) {
-        trials.finished = true;
-        continueRoutine = false;
-    }
-    
-    // check for quit (typically the Esc key)
-    if (psychoJS.experiment.experimentEnded || psychoJS.eventManager.getKeys({keyList:['escape']}).length > 0) {
-      return quitPsychoJS('The [Escape] key was pressed. Goodbye!', false);
-    }
-    
-    // check if the Routine should terminate
-    if (!continueRoutine) {  // a component has requested a forced-end of Routine
-      return Scheduler.Event.NEXT;
-    }
-    
-    continueRoutine = false;  // reverts to True if at least one component still running
-    for (const thisComponent of harvestComponents)
-      if ('status' in thisComponent && thisComponent.status !== PsychoJS.Status.FINISHED) {
-        continueRoutine = true;
-        break;
-      }
-    
-    // refresh the screen if continuing
-    if (continueRoutine && routineTimer.getTime() > 0) {
-      return Scheduler.Event.FLIP_REPEAT;
-    } else {
-      return Scheduler.Event.NEXT;
-    }
-  };
-}
-
-
-function harvestRoutineEnd(snapshot) {
-  return async function () {
-    //--- Ending Routine 'harvest' ---
-    for (const thisComponent of harvestComponents) {
-      if (typeof thisComponent.setAutoDraw === 'function') {
-        thisComponent.setAutoDraw(false);
-      }
-    }
-    psychoJS.experiment.addData('harvest.stopped', globalClock.getTime());
-    if (harvestMaxDurationReached) {
-        harvestClock.add(harvestMaxDuration);
-    } else {
-        harvestClock.add(harvest_time);
-    }
-    // Routines running outside a loop should always advance the datafile row
-    if (currentLoop === psychoJS.experiment) {
-      psychoJS.experiment.nextEntry(snapshot);
-    }
-    return Scheduler.Event.NEXT;
-  }
-}
-
-
 var show_applesMaxDurationReached;
 var show_applesMaxDuration;
 var show_applesComponents;
@@ -1552,7 +1447,7 @@ function too_slowRoutineEachFrame() {
       text_3.setAutoDraw(true);
     }
     
-    frameRemains = 0.0 + (apple_time + harvest_time) - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    frameRemains = 0.0 + (apple_time) - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
     if (text_3.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       text_3.setAutoDraw(false);
     }
@@ -1567,7 +1462,7 @@ function too_slowRoutineEachFrame() {
       image_3.setAutoDraw(true);
     }
     
-    frameRemains = 0.0 + (apple_time + harvest_time) - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
+    frameRemains = 0.0 + (apple_time) - psychoJS.window.monitorFramePeriod * 0.75;// most of one frame period left
     if (image_3.status === PsychoJS.Status.STARTED && t >= frameRemains) {
       image_3.setAutoDraw(false);
     }
